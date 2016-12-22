@@ -6,11 +6,12 @@ public class PistolBullet : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        transform.position += transform.up / 10 ;
+        transform.position -= transform.forward / 10 ;
 	}
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
+        if( !collision.tag.Equals("Player"))
         Destroy(gameObject);
     }
 }

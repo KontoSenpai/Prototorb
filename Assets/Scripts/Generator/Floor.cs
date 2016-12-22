@@ -56,7 +56,7 @@ public class Floor : MonoBehaviour {
         
         current_Rooms++;
 
-        for ( int room = 1; room < nb_Room; room++)
+        for ( int room = 1; room < 100; room++)
         {
             rooms.Add( GetRoomType( Random.Range( 0, 100)));
             AddChild(rooms[room]);

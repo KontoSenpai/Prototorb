@@ -5,7 +5,7 @@ public class TopDownCharacterShoot : MonoBehaviour {
 
     public GameObject bullet;
 
-    private const float pistolFireCD = 1.0f;
+    private const float pistolFireCD = 0.5f;
     private bool canFire = true;
 
 	// Use this for initialization
@@ -20,6 +20,7 @@ public class TopDownCharacterShoot : MonoBehaviour {
         if(Input.GetAxis("Right_Trigger") < - 0.1 && canFire)
         {
             GameObject bull = Instantiate(bullet, transform.position, transform.rotation) as GameObject;
+            bull.transform.Rotate(new Vector3(90, 0, 0));
             StartCoroutine(fireCD());
         }
 	}
