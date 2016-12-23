@@ -9,6 +9,7 @@ public class TopDownCharacterMovement : MonoBehaviour {
     private const int max_Velocity = 8;
     private const float analog_Thresold = 0.2f;
 
+    private bool exit_Touched = false;
 
     // Use this for initialization
     void Start ()
@@ -52,7 +53,7 @@ public class TopDownCharacterMovement : MonoBehaviour {
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
 
-        float vSpeed = -9.8f * Time.deltaTime;
+        float vSpeed = -20f * Time.deltaTime;
         direction.y = vSpeed;
 
         GetComponent<CharacterController>().Move( direction / max_Velocity );
@@ -75,4 +76,13 @@ public class TopDownCharacterMovement : MonoBehaviour {
         if (Mathf.Abs(x) > analog_Thresold || Mathf.Abs(y) > analog_Thresold)
             gun_Pivot.transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);
     }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.tag.Equals("Exit"))
+            exit_Touched = true;
+    }
+
+    public void SetExitReached(bool reached) { exit_Touched = reached; }
+    public bool exitReached(){ return exit_Touched; }
 }

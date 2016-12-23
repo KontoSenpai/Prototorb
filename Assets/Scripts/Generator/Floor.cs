@@ -1,68 +1,40 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class Floor : MonoBehaviour {
 
     public GameObject[] roomType;
 
-    private Vector3 base_Room_Position = Vector3.zero;
-
-    private const int min_Room = 2;
-    private const int max_Room = 5;
-
-    private int min_Room_Floor = 0;
-    private int max_Room_Floor = 0;
-
-    private int current_Floor = 1;
-
-    private const int min_Room_Size = 4;
-    private const int max_Room_Size = 8;
-
-    private int min_Size = 0;
-    private int max_Size = 0;
-
     private Vector2 room_Dimensions;
 
     private int current_Rooms;
     private List<GameObject> rooms;
+    private bool complete;
 
-	void Start ()
+    public List<GameObject> GenerateLayout(int min_Room_Size, int max_Room_Size, int min_Room_Floor, int max_Room_Floor)
     {
-        min_Room_Floor = min_Room + Mathf.FloorToInt( current_Floor / 2);
-        max_Room_Floor += max_Room + Mathf.FloorToInt(current_Floor / 2) * 2;
-
-        min_Size = min_Room_Size + (Mathf.FloorToInt(current_Floor / 5));
-        max_Size = max_Room_Size;
-
-        room_Dimensions = new Vector2(Random.Range(min_Room_Size, max_Size), Random.Range(min_Room_Size, max_Size));
-
         rooms = new List<GameObject>();
+        current_Rooms = 0;
 
-        GenerateLayout();
-	}
-	
-	void Update ()
-    {
-	
-	}
-
-    private void GenerateLayout()
-    {
+        room_Dimensions = new Vector2(Random.Range(min_Room_Size, max_Room_Size), Random.Range(min_Room_Size, max_Room_Size));
         int nb_Room = Random.Range(min_Room_Floor, max_Room_Floor);
 
         rooms.Add( GetRoomType(Random.Range(0, 100)));
         rooms[0].name = "Room 0";
-        StartCoroutine(rooms[0].GetComponent<Room>().SetInformations(room_Dimensions));
+        rooms[0].GetComponent<Room>().SetInformations(room_Dimensions);
         
         current_Rooms++;
 
-        for ( int room = 1; room < 100; room++)
+        for ( int room = 1; room < nb_Room; room++)
         {
             rooms.Add( GetRoomType( Random.Range( 0, 100)));
             AddChild(rooms[room]);
             rooms[room].name = "Room " + room.ToString();
             current_Rooms++;
         }
+
+        return rooms;
     }
 
     private void AddChild(GameObject room)
@@ -82,25 +54,38 @@ public class Floor : MonoBehaviour {
         if( ok.Equals("LEFT"))
         {
             position.z -= (room_Dimensions.y + 1);
-            StartCoroutine(room.GetComponent<Room>().SetInformations(position, room_Dimensions, "RIGHT", rooms[random_Value]));
+            room.GetComponent<Room>().SetInformations(position, room_Dimensions, "RIGHT", rooms[random_Value]);
         }
         else if (ok.Equals("RIGHT"))
         {
             position.z += (room_Dimensions.y + 1);
-            StartCoroutine(room.GetComponent<Room>().SetInformations(position, room_Dimensions, "LEFT", rooms[random_Value]));
+            room.GetComponent<Room>().SetInformations(position, room_Dimensions, "LEFT", rooms[random_Value]);
         }
         else if (ok.Equals("TOP"))
         {
             position.x -= (room_Dimensions.x + 1);
-            StartCoroutine(room.GetComponent<Room>().SetInformations(position, room_Dimensions, "BOTTOM", rooms[random_Value]));
+            room.GetComponent<Room>().SetInformations(position, room_Dimensions, "BOTTOM", rooms[random_Value]);
         }
         else if (ok.Equals("BOTTOM"))
         {
             position.x += (room_Dimensions.x + 1);
-            StartCoroutine(room.GetComponent<Room>().SetInformations(position, room_Dimensions, "TOP", rooms[random_Value]));
+            room.GetComponent<Room>().SetInformations(position, room_Dimensions, "TOP", rooms[random_Value]);
         }
     }
 
+    public IEnumerator FillRooms()
+    {
+        for( int index = 0; index < rooms.Count; index ++)
+        {
+            yield return new WaitForSeconds(0.05f);
+            StartCoroutine(rooms[index].GetComponent<Room>().SetFloorTile());
+        }
+
+        complete = true;
+    }
+
+    public bool isComplete(){ return complete; }
+    public void setComplete(bool ok) { complete = ok; }
     private GameObject GetRoomType(int randValue)
     {
         GameObject room = null;
@@ -110,5 +95,14 @@ public class Floor : MonoBehaviour {
         }
 
         return room;
+    }
+
+    public void DestroyAll()
+    {
+        for( int index = 0; index < rooms.Count; index++)
+        {
+            Destroy(rooms[index]);
+        }
+        rooms = new List<GameObject>();
     }
 }

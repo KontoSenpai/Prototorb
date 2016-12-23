@@ -9,7 +9,7 @@ public class Room : MonoBehaviour {
     public GameObject[] corners;
     public GameObject door_Way;
     public GameObject door_Way_Child;
-
+    public GameObject vision_Obstruction;
     private Vector2 dimensions;
 
     private Hashtable child_Rooms;
@@ -26,25 +26,18 @@ public class Room : MonoBehaviour {
     {
 	}
 
-    public IEnumerator SetInformations( Vector2 room_Dimension)
+    public void SetInformations( Vector2 room_Dimension)
     {
         dimensions = room_Dimension;
-
-        yield return new WaitForSeconds(0.5f);
-        StartCoroutine( SetFloorTile());
     }
 
-    public IEnumerator SetInformations( Vector3 new_Position, Vector2 room_Dimension, string parent_Orientation, GameObject parentObj)
+    public void SetInformations( Vector3 new_Position, Vector2 room_Dimension, string parent_Orientation, GameObject parentObj)
     {
         parent_Direction = parent_Orientation;
 
         dimensions = room_Dimension;
 
         transform.position = new_Position;
-
-        yield return new WaitForSeconds(0.5f);
-
-        StartCoroutine(SetFloorTile());
     }
 
     public string addChild( List<GameObject> all_Rooms,GameObject child_Room)
@@ -303,7 +296,7 @@ public class Room : MonoBehaviour {
             return false;
     }
 
-    private IEnumerator SetFloorTile()
+    public IEnumerator SetFloorTile()
     {
         for(int xMin = 1; xMin < dimensions.x - 1; xMin++)
         {
@@ -316,7 +309,7 @@ public class Room : MonoBehaviour {
                 tile.transform.position = tilePos;
             }
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.05f);
 
         SetWallTile();
     }
@@ -358,7 +351,6 @@ public class Room : MonoBehaviour {
             }
         }
 
-        new WaitForSeconds(1);
         // RIGHT WALLS
         doorPlaced = false;
         for (int xMin = 1; xMin < dimensions.x - 1; xMin++)
@@ -492,5 +484,17 @@ public class Room : MonoBehaviour {
         tile_Pos.z += dimensions.y - 1;
         corner.transform.position = tile_Pos;
         corner.transform.Rotate(new Vector3(90, 0, 0));
+
+
+        vision_Obstruction = Instantiate(vision_Obstruction, transform) as GameObject;
+        Vector3 block_Position = transform.position;
+        block_Position.x += dimensions.x / 2;
+        block_Position.y += 1;
+        block_Position.z += dimensions.y / 2;
+
+        vision_Obstruction.transform.position = block_Position;
+        vision_Obstruction.transform.localScale = (new Vector3(dimensions.x + 0.9f, 2, dimensions.y + 0.9f));
+
     }
+
 }
