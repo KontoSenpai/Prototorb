@@ -6,7 +6,7 @@ public class TopDownCharacterMovement : MonoBehaviour {
     public GameObject gun_Pivot;
     public GameObject character_Camera;
 
-    private const int max_Velocity = 8;
+    private const int max_Velocity = 12;
     private const float analog_Thresold = 0.2f;
 
     private bool exit_Touched = false;

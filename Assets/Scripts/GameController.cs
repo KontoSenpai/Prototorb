@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour {
             yield return new WaitForSeconds(2);
             start_Room_Index = -1;
         }
+        player.transform.position = new Vector3(0, 10, 0);
         player.SetActive(false);
         floor_Rooms = new List<GameObject>();
         min_Room_Floor = min_Room + Mathf.FloorToInt(current_Floor / 2);
@@ -64,7 +65,6 @@ public class GameController : MonoBehaviour {
         max_Size = max_Room_Size;
 
         floor_Rooms = generator.GetComponent<Floor>().GenerateLayout(min_Size, max_Size, min_Room_Floor, max_Room_Floor);
-
         StartCoroutine(generator.GetComponent<Floor>().FillRooms());
     }
 

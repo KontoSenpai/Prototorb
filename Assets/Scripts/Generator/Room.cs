@@ -303,10 +303,11 @@ public class Room : MonoBehaviour {
             for(int zMin = 1; zMin < dimensions.y - 1; zMin++)
             {
                 GameObject tile = Instantiate(floor_Tile, transform) as GameObject;
-                Vector3 tilePos = transform.position;
-                tilePos.x += xMin;
-                tilePos.z += zMin;
-                tile.transform.position = tilePos;
+                Vector3 tile_Pos = transform.position;
+                tile_Pos.x += xMin;
+                tile_Pos.z += zMin;
+                tile.transform.position = tile_Pos;
+                tile.transform.Rotate(new Vector3(0, 1, 0), 0, Space.World);
             }
         }
         yield return new WaitForSeconds(0.05f);
@@ -320,105 +321,121 @@ public class Room : MonoBehaviour {
         bool doorPlaced = false;
         for (int xMin = 1; xMin < dimensions.x -1; xMin++)
         {
-            if( isDoorParent("LEFT") && !doorPlaced && xMin == 2)
+            GameObject tile;
+            if ( isDoorParent("LEFT") && !doorPlaced && xMin == 2)
             {
-                GameObject tile = Instantiate(door_Way, transform) as GameObject;
+                tile = Instantiate(door_Way, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += xMin;
                 tilePos.z -= 0.5f;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, -90, 0));
+                tile.transform.Rotate(new Vector3(0, 180, 0));
                 doorPlaced = true;
             }
             else if( isDoorChild("LEFT") && !doorPlaced && xMin == 2)
             {
-                GameObject tile = Instantiate(door_Way_Child, transform) as GameObject;
+                tile = Instantiate(door_Way_Child, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += xMin;
                 tilePos.z -= 0.5f;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, -90, 0));
+                tile.transform.Rotate(new Vector3(0, 180, 0));
                 doorPlaced = true;
             }
             else
             {
-                GameObject tile = Instantiate(wall_Tile, transform) as GameObject;
+                tile = Instantiate(wall_Tile, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += xMin;
                 tilePos.z -= 0.5f;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, -90, 0));
+                tile.transform.Rotate(new Vector3(0, 180, 0));
+            }
+
+            foreach (Transform child in tile.transform)
+            {
+                if (child.name.Contains("Floor"))
+                    child.transform.Rotate(new Vector3(0, 1, 0), 180, Space.World);
             }
         }
-
         // RIGHT WALLS
         doorPlaced = false;
         for (int xMin = 1; xMin < dimensions.x - 1; xMin++)
         {
+            GameObject tile;
             if (isDoorParent("RIGHT") && !doorPlaced && xMin == 2)
             {
-                GameObject tile = Instantiate(door_Way, transform) as GameObject;
+                tile = Instantiate(door_Way, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += xMin;
                 tilePos.z += dimensions.y - 0.5f;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 90, 0));
+                tile.transform.Rotate(new Vector3(0, 0, 0));
                 doorPlaced = true;
             }
             else if (isDoorChild("RIGHT") && !doorPlaced && xMin == 2)
             {
-                GameObject tile = Instantiate(door_Way_Child, transform) as GameObject;
+                tile = Instantiate(door_Way_Child, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += xMin;
                 tilePos.z += dimensions.y - 0.5f;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 90, 0));
+                tile.transform.Rotate(new Vector3(0, 0, 0));
                 doorPlaced = true;
             }
             else
             {
-                GameObject tile = Instantiate(wall_Tile, transform) as GameObject;
+                tile = Instantiate(wall_Tile, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += xMin;
                 tilePos.z += dimensions.y - 0.5f;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 90, 0));
+                tile.transform.Rotate(new Vector3(0, 0, 0));
+            }
+            foreach (Transform child in tile.transform)
+            {
+                if (child.name.Contains("Floor"))
+                    child.transform.Rotate(new Vector3(0, 1, 0), 0, Space.World);
             }
         }
-
-
         // TOP WALLS
         doorPlaced = false;
         for (int zMin = 1; zMin < dimensions.y - 1; zMin++)
         {
+            GameObject tile;
             if (isDoorParent("TOP") && !doorPlaced && zMin == 2)
             {
-                GameObject tile = Instantiate(door_Way, transform) as GameObject;
+                tile = Instantiate(door_Way, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x -= 0.5f;
                 tilePos.z += zMin;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 0, 0));
+                tile.transform.Rotate(new Vector3(0, -90, 0));
                 doorPlaced = true;
             }
             else if (isDoorChild("TOP") && !doorPlaced && zMin == 2)
             {
-                GameObject tile = Instantiate(door_Way_Child, transform) as GameObject;
+                tile = Instantiate(door_Way_Child, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x -= 0.5f;
                 tilePos.z += zMin;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 0, 0));
+                tile.transform.Rotate(new Vector3(0, -90, 0));
                 doorPlaced = true;
             }
             else
             {
-                GameObject tile = Instantiate(wall_Tile, transform) as GameObject;
+                tile = Instantiate(wall_Tile, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x -= 0.5f;
                 tilePos.z += zMin;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 0, 0));
+                tile.transform.Rotate(new Vector3(0, -90, 0));
+            }
+            foreach (Transform child in tile.transform)
+            {
+                if (child.name.Contains("Floor"))
+                    child.transform.Rotate(new Vector3(0, 1, 0), 90, Space.World);
             }
         }
 
@@ -426,75 +443,127 @@ public class Room : MonoBehaviour {
         doorPlaced = false;
         for (int zMin = 1; zMin < dimensions.y - 1; zMin++)
         {
+            GameObject tile;
             if (isDoorParent("BOTTOM") && !doorPlaced && zMin == 2)
             {
-                GameObject tile = Instantiate(door_Way, transform) as GameObject;
+                tile = Instantiate(door_Way, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += dimensions.x - 0.5f;
                 tilePos.z += zMin;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 180, 0));
+                tile.transform.Rotate(new Vector3(0, 90, 0));
                 doorPlaced = true;
             }
             else if (isDoorChild("BOTTOM") && !doorPlaced && zMin == 2)
             {
-                GameObject tile = Instantiate(door_Way_Child, transform) as GameObject;
+                tile = Instantiate(door_Way_Child, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += dimensions.x - 0.5f;
                 tilePos.z += zMin;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 180, 0));
+                tile.transform.Rotate(new Vector3(0, 90, 0));
                 doorPlaced = true;
             }
             else
             {
-                GameObject tile = Instantiate(wall_Tile, transform) as GameObject;
+                tile = Instantiate(wall_Tile, transform) as GameObject;
                 Vector3 tilePos = transform.position;
                 tilePos.x += dimensions.x - 0.5f;
                 tilePos.z += zMin;
                 tile.transform.position = tilePos;
-                tile.transform.Rotate(new Vector3(0, 180, 0));
+                tile.transform.Rotate(new Vector3(0, 90, 0));
+            }
+            foreach (Transform child in tile.transform)
+            {
+                if (child.name.Contains("Floor"))
+                    child.transform.Rotate(new Vector3(0, 1, 0), -90, Space.World);
             }
         }
 
+        SetCornerTile();
+        vision_Obstruction = Instantiate(vision_Obstruction, transform) as GameObject;
+        Vector3 block_Position = transform.position;
+        block_Position.x += (dimensions.x / 2) - 0.5f;
+        block_Position.y += 1;
+        block_Position.z += (dimensions.y / 2) - 0.5f;
+
+        vision_Obstruction.transform.position = block_Position;
+        vision_Obstruction.transform.localScale = (new Vector3(dimensions.x - 0.009f, 2, dimensions.y - 0.009f));
+
+    }
+
+    public void SetCornerTile()
+    {
         // TOP LEFT CORNER
-        GameObject corner = Instantiate(corners[( Random.Range(0, 100) < 50) ? 0 : 1], transform) as GameObject;
+        GameObject corner = Instantiate(corners[(Random.Range(0, 100) < 50) ? 0 : 1], transform) as GameObject;
         Vector3 tile_Pos = transform.position;
         corner.transform.position = tile_Pos;
-        corner.transform.Rotate(new Vector3(90, 180, 0));
+        corner.transform.Rotate(new Vector3(0, 1, 0), 180, Space.World);
+
+        foreach( Transform child in corner.transform)
+        {
+            if( child.name.Contains("Floor"))
+            {
+                child.transform.Rotate(new Vector3(0, 1, 0), 180, Space.World);
+            }
+        }
 
         // TOP RIGHT CORNER
         corner = Instantiate(corners[(Random.Range(0, 100) < 50) ? 0 : 1], transform) as GameObject;
         tile_Pos = transform.position;
-        tile_Pos.z += dimensions.y -1;
+        tile_Pos.z += dimensions.y - 1;
         corner.transform.position = tile_Pos;
-        corner.transform.Rotate(new Vector3(90, -90, 0));
+        corner.transform.Rotate( new Vector3(0, 1, 0), -90, Space.World);
+
+        foreach (Transform child in corner.transform)
+        {
+            if (child.name.Contains("Floor"))
+            {
+                child.transform.Rotate(new Vector3(0, 1, 0), 90, Space.World);
+            }
+        }
 
         // BOTTOM LEFT CORNER
         corner = Instantiate(corners[(Random.Range(0, 100) < 50) ? 0 : 1], transform) as GameObject;
         tile_Pos = transform.position;
         tile_Pos.x += dimensions.x - 1;
         corner.transform.position = tile_Pos;
-        corner.transform.Rotate(new Vector3(90, 90, 0));
+        corner.transform.Rotate(new Vector3(0, 1, 0), 90, Space.World);
 
-        // BOTTOM LEFT CORNER
+        foreach (Transform child in corner.transform)
+        {
+            if (child.name.Contains("Floor"))
+            {
+                child.transform.Rotate(new Vector3(0, 1, 0), -90, Space.World);
+            }
+        }
+
+        // BOTTOM RIGHT CORNER
         corner = Instantiate(corners[(Random.Range(0, 100) < 50) ? 0 : 1], transform) as GameObject;
         tile_Pos = transform.position;
         tile_Pos.x += dimensions.x - 1;
         tile_Pos.z += dimensions.y - 1;
         corner.transform.position = tile_Pos;
-        corner.transform.Rotate(new Vector3(90, 0, 0));
+        corner.transform.Rotate(new Vector3(0, 1, 0), 0.0f, Space.World);
 
-
-        vision_Obstruction = Instantiate(vision_Obstruction, transform) as GameObject;
-        Vector3 block_Position = transform.position;
-        block_Position.x += dimensions.x / 2;
-        block_Position.y += 1;
-        block_Position.z += dimensions.y / 2;
-
-        vision_Obstruction.transform.position = block_Position;
-        vision_Obstruction.transform.localScale = (new Vector3(dimensions.x + 0.9f, 2, dimensions.y + 0.9f));
+        foreach (Transform child in corner.transform)
+        {
+            if (child.name.Contains("Floor"))
+            {
+                child.transform.Rotate(new Vector3(0, 1, 0), 0, Space.World);
+            }
+        }
 
     }
 
+    public IEnumerator SetLight(GameObject r_light)
+    {
+        yield return new WaitForSeconds(1);
+        GameObject light = Instantiate(r_light, transform) as GameObject;
+        Vector3 light_Pos = transform.position;
+        light_Pos.x += dimensions.x/2;
+        light_Pos.y = 1.25f;
+        light_Pos.z += dimensions.y/2;
+        light.transform.position = light_Pos;
+    }
 }

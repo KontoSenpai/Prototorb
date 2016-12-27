@@ -14,8 +14,9 @@ public class Camera_Hide_Rooms : MonoBehaviour {
 
         RaycastHit hit;
         Vector3 forward = transform.TransformDirection(Vector3.forward) * 10;
-
-        if(Physics.Raycast(transform.position,(forward),out hit))
+        Vector3 camera_Position = transform.position;
+        camera_Position.x -= 1;
+        if(Physics.Raycast(camera_Position,(forward),out hit))
         {
             if( hit.transform.gameObject.name.Contains("Obstruction"))
                 Destroy(hit.transform.gameObject);

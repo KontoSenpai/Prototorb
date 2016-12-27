@@ -6,6 +6,8 @@ public class Floor : MonoBehaviour {
 
     public GameObject[] roomType;
 
+    public GameObject roof_Light;
+
     private Vector2 room_Dimensions;
 
     private int current_Rooms;
@@ -79,6 +81,7 @@ public class Floor : MonoBehaviour {
         {
             yield return new WaitForSeconds(0.05f);
             StartCoroutine(rooms[index].GetComponent<Room>().SetFloorTile());
+            StartCoroutine(rooms[index].GetComponent<Room>().SetLight(roof_Light));
         }
 
         complete = true;
@@ -89,9 +92,25 @@ public class Floor : MonoBehaviour {
     private GameObject GetRoomType(int randValue)
     {
         GameObject room = null;
-        if( randValue < 100)
+        if( randValue < 30) // Normal
+        {
+            room = Instantiate(roomType[2], transform.position, transform.rotation) as GameObject;
+        }
+        else if( randValue < 45) // Infirmary
         {
             room = Instantiate(roomType[0], transform.position, transform.rotation) as GameObject;
+        }
+        else if (randValue < 65) // Kitchen
+        {
+            room = Instantiate(roomType[1], transform.position, transform.rotation) as GameObject;
+        }
+        else if (randValue < 85) // Storage
+        {
+            room = Instantiate(roomType[3], transform.position, transform.rotation) as GameObject;
+        }
+        else if (randValue <= 100) // Weaponry
+        {
+            room = Instantiate(roomType[4], transform.position, transform.rotation) as GameObject;
         }
 
         return room;

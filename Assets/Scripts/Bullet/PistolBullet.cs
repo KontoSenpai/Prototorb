@@ -11,7 +11,7 @@ public class PistolBullet : MonoBehaviour {
 
     void OnTriggerEnter(Collider collision)
     {
-        if( !collision.tag.Equals("Player"))
+        if( !collision.tag.Equals("Player") && !collision.tag.Equals("Obstruction"))
         Destroy(gameObject);
     }
 }
